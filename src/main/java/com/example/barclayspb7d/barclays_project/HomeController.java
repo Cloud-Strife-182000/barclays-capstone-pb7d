@@ -80,6 +80,11 @@ public class HomeController {
 
         User userData = userRepo.findByMailID(user.getMailID());
 
+        if(userData == null){
+
+            return "login_failure";
+        }
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         String enteredPassword = user.getPassword();
@@ -93,6 +98,20 @@ public class HomeController {
         }
 
         return "login_success";
+    
+    }
+
+    @GetMapping("/login_success")
+    public String loginSuccessPage(Model model){
+
+        return "login_success";
+    
+    }
+
+    @GetMapping("/login_failure")
+    public String loginFailurePage(Model model){
+
+        return "login_failure";
     
     }
     
