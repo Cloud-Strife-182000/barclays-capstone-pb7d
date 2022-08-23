@@ -27,5 +27,46 @@ public class SavingAccount {
 
     @Column(nullable = false, unique = false)
     private Long currBal;
+
+    public Long getSeqID() {
+        return this.SeqID;
+    }
+
+    public void setSeqID(Long SeqID) {
+        this.SeqID = SeqID;
+    }
+
+    public String getAccNo() {
+        return this.AccNo;
+    }
+
+    public void setAccNo(String AccNo) {
+        this.AccNo = AccNo;
+    }
+
+    public String getName() {
+        return this.Name;
+    }
+
+    public void setName(String Name) {
+        this.Name = Name;
+    }
+
+    public String getEmailID() {
+        return this.emailID;
+    }
+
+    public void setEmailID(String emailID) {
+        this.emailID = emailID;
+    }
+
+    public Long getCurrBal() {
+        return this.currBal;
+    }
+
+    public void setCurrBal(Long currBal) {
+        this.currBal = currBal;
+    }
+
   
 }
