@@ -1,0 +1,14 @@
+<html>
+    <h1>Registration Page</h1>
+
+    <h2>Register User:</h2>
+
+    <form th:action="@{/register}" th:object="${register}" method="post">
+
+        <input type="text" th:field="*{emailID}">
+        <input type="password" th:field="*{password}">
+        <input type="submit" value="Submit">
+
+    </form>
+
+</html>
