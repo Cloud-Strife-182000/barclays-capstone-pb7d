@@ -1,4 +1,7 @@
-package com.example.barclayspb7d.barclays_project;
+package com.example.barclayspb7d.barclays_project.controllers;
+
+import com.example.barclayspb7d.barclays_project.dao.UserRepository;
+import com.example.barclayspb7d.barclays_project.entities.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -1,4 +1,6 @@
-package com.example.barclayspb7d.barclays_project;
+package com.example.barclayspb7d.barclays_project.dao;
+
+import com.example.barclayspb7d.barclays_project.entities.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

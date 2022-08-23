@@ -1,4 +1,4 @@
-package com.example.barclayspb7d.barclays_project;
+package com.example.barclayspb7d.barclays_project.entities;
 
 import javax.persistence.*;
 
