@@ -71,16 +71,19 @@ a{
     <br>   
     <h2>Login Page</h2><br>    
     <div class="login">    
-    <form method="get" action="login.php">    
+
+    <form th:action="@{/login}" th:object="${login}" method="post">    
+
         <label><b>Email</b></label>  
         <br>  
-        <input type="text" name="Uname" id="Uname" placeholder="Email">    
+        <input type="text" name="Uname" id="Uname" placeholder="Email" th:field="*{mailID}">    
         <br><br>    
         <label><b>Password</b></label>    
-        <input type="Password" name="Pass" id="Pass" placeholder="Password">    
+        <input type="password" name="Pass" id="Pass" placeholder="Password" th:field="*{password}">    
         <br><br>    
         <input type="submit" value="Submit">  
         <br><br>      
+
     </form>     
 </div>    
 </body>    
