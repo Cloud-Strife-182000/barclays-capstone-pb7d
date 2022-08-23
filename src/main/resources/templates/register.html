@@ -1,14 +1,90 @@
-<html>
-    <h1>Registration Page</h1>
+<!DOCTYPE html>    
+<html>    
+<head>    
+    <title>Login Form</title>    
+    <link rel="stylesheet" type="text/css" href="css/style.css">    
+</head>    
 
-    <h2>Register User:</h2>
-
+<style>
+body  
+{  
+    margin: 0;  
+    padding: 0;  
+    background-color:#F8EEE7;  
+    font-family: 'Arial';  
+}  
+.register{  
+        width: 382px;  
+        overflow: hidden;  
+        margin: auto;  
+        margin: 20 0 0 450px;  
+        padding: 80px;  
+        background: #94618E;  
+        border-radius: 15px ;  
+          
+}  
+h2{  
+    text-align: center;  
+    color: #94618E;  
+    padding: 20px;  
+}  
+label{  
+    color: white;  
+    font-size: 17px;  
+}  
+#Uname{  
+    width: 300px;  
+    height: 30px;  
+    border: none;  
+    border-radius: 3px;  
+    padding-left: 8px;  
+}  
+#Pass{  
+    width: 300px;  
+    height: 30px;  
+    border: none;  
+    border-radius: 3px;  
+    padding-left: 8px;  
+      
+}  
+#log{  
+    width: 300px;  
+    height: 30px;  
+    border: none;  
+    border-radius: 17px;  
+    padding-left: 7px;  
+    color: black;  
+  
+  
+}  
+span{  
+    color: white;  
+    font-size: 17px;  
+}  
+a{  
+    float: right;  
+    background-color: grey;  
+}  
+</style>
+<body> 
+    <br>
+    <br>   
+    <h2>Login Page</h2><br>    
+    <div class="register">    
+    
     <form th:action="@{/register}" th:object="${register}" method="post">
 
-        <input type="text" th:field="*{emailID}">
-        <input type="password" th:field="*{password}">
+        <label><b>Email</b></label> 
+        <br>
+        <input type="text" th:field="*{mailID}" name="Uname" id="Uname" placeholder="Email">
+        <br><br>    
+        <label><b>Password</b></label> 
+        <input type="password" th:field="*{password}" name="Pass" id="Pass" placeholder="Password">
+        <br><br>  
         <input type="submit" value="Submit">
+        <br><br>  
 
     </form>
-
-</html>
+</div>    
+</body>    
+</html>    
