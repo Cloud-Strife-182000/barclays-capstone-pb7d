@@ -233,7 +233,6 @@ public class HomeController {
         loanAccount.setMaxLoanGrant(70000.0);
         loanAccount.setInterestRate(7.0);
         loanAccount.setTenure(5);
-        loanAccount.setLoanAmount(0l);
         loanAccount.setLoanStatus("PENDING");
 
         model.addAttribute("loan", loanAccount);
@@ -258,7 +257,7 @@ public class HomeController {
         Double CalculatedEMI = LoanRepaymentService.CalcEmi(loanAccount.getInterestRate(), loanAccount.getTenure(), loanAccount.getLoanAmount());
 
         schedule.setEMI(CalculatedEMI);
-        schedule.setIntrestAmount(0.0);
+        schedule.setInterestAmount(0.0);
         schedule.setMonths(0l);
         schedule.setOutstanding(0.0);
         schedule.setPrincipalAmount(0.0);
@@ -277,12 +276,6 @@ public class HomeController {
     public String congratsPage(){
 
         return "congratulations";
-    }
-
-    @PostMapping("/congratulations")
-    public String exitCongratsPage(){
-
-        return "redirect:/account";
     }
     
 }
