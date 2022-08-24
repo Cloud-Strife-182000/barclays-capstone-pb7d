@@ -8,7 +8,7 @@
 <body>
 
 <div class="header">
-    <a th:href="@{home}" class="logo">CompanyLogo</a>
+    <a th:href="@{home}" class="logo">PB7D - Home Loan</a>
     <div class="header-right">
       <a th:href="@{home}">Home</a>
       <a class="active" th:href="@{register}">Register</a>
@@ -28,7 +28,7 @@
         <input type="text" th:field="*{name}" placeholder="Name">
         <br><br>  
         <label><b>Account Number</b></label> 
-        <input type="number" th:field="*{accNo}" placeholder="Account Number">
+        <input type="number" maxlength="12" th:field="*{accNo}" placeholder="Account Number">
         <br><br>  
         <label><b>Current Balance</b></label> 
         <input type="number" th:field="*{currBal}" placeholder="Current Balance">

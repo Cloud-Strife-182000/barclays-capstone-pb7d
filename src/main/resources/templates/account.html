@@ -8,7 +8,7 @@
 <body>
 
 <div class="header">
-  <a th:href="@{home}" class="logo">CompanyLogo</a>
+  <a th:href="@{home}" class="logo">PB7D - Home Loan</a>
   <div class="header-right">
     <a th:href="@{home}">Home</a>
     <a class="active" th:href="@{account}">Your Account</a>
@@ -21,10 +21,21 @@
 
     <h2>Account Details:</h2>
 
-    <p>Name:</p><p th:text="${curr_account.name}" />
-    <p>Account Number:</p><p th:text="${curr_account.accNo}" />
-    <p>Current Balance:</p><p th:text="${curr_account.currBal}" />
-    <p>Mail ID:</p><p th:text="${curr_account.mailID}" />
+    <label><b>Name:</b></label>
+    <p th:text="${curr_account.name}" />
+
+    <label><b>Account Number:</b></label>
+    <p th:text="${curr_account.accNo}" />
+
+    <label><b>Current Balance:</b></label>
+    <p th:text="${curr_account.currBal}" />
+
+    <label><b>Mail ID:</b></label>
+    <p th:text="${curr_account.mailID}" />
+
+    <a th:href="@{loan}"><button>Apply for Loan</button></a>
+
+    <br><br>
 
     <form action="#" th:action="@{/account}" method="post">
         <input type="submit" value="Log Out">

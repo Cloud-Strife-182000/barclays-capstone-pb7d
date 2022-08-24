@@ -184,5 +184,20 @@ public class HomeController {
 
         return "redirect:/home";
     }
+
+    @GetMapping("/loan")
+    public String loanPage(HttpSession session, Model model){
+
+        User currUser = (User) session.getAttribute("curr_user");
+
+        if(currUser != null){
+
+            model.addAttribute("curr_account", currUser);
+            
+            return "loan";
+        }
+
+        return "redirect:/home";
+    }
     
 }

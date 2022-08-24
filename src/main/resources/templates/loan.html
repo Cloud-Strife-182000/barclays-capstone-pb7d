@@ -10,18 +10,14 @@
 <div class="header">
   <a th:href="@{home}" class="logo">PB7D - Home Loan</a>
   <div class="header-right">
-    <a class="active" th:href="@{home}">Home</a>
-    <a th:if="${!userExists}" th:href="@{register}">Register</a>
-    <a th:if="${!userExists}" th:href="@{login}">Login</a>
-    <a th:if="${userExists}" th:href="@{account}">Your Account</a>
+    <a th:href="@{home}">Home</a>
+    <a class="active" th:href="@{account}">Your Account</a>
   </div>
 </div>
 
 <div style="padding-left:20px">
 
-    <h1>Hello, check the navigation bar to register/login.</h1>
-
-    <br><br>
+    <h1>Apply for Home Loan:</h1>
 
 </div>
 
