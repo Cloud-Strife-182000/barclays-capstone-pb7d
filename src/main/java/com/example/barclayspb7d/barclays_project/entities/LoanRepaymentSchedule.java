@@ -56,11 +56,11 @@ public class LoanRepaymentSchedule {
 		this.Outstanding = Outstanding;
 	}
 
-	public Double getIntrestAmount() {
+	public Double getInterestAmount() {
 		return this.IntrestAmount;
 	}
 
-	public void setIntrestAmount(Double IntrestAmount) {
+	public void setInterestAmount(Double IntrestAmount) {
 		this.IntrestAmount = IntrestAmount;
 	}
 
