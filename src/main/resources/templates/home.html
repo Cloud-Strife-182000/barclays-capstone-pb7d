@@ -11,8 +11,9 @@
   <a th:href="@{home}" class="logo">CompanyLogo</a>
   <div class="header-right">
     <a class="active" th:href="@{home}">Home</a>
-    <a th:href="@{register}">Register</a>
-    <a th:href="@{login}">Login</a>
+    <div th:if="${!userExists}"><a th:href="@{register}">Register</a></div>
+    <div th:if="${!userExists}"><a th:href="@{login}">Login</a></div>
+    <div th:if="${userExists}"><a th:href="@{account}">Your Account</a></div>
   </div>
 </div>
 
@@ -27,9 +28,8 @@
 </div>
 
 <footer>
-    <p>Author: Hege Refsnes<br>
-    <a href="mailto:hege@example.com">hege@example.com</a></p>
-  </footer>
+    <p>Footer<br></p>
+</footer>
 
 </body>
 </html>

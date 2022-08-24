@@ -26,7 +26,17 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String homePage(Model model){
+    public String homePage(Model model, HttpSession session){
+
+        User currUser = (User) session.getAttribute("curr_user");
+
+        if(currUser != null){
+
+            model.addAttribute("userExists", true);
+        }
+        else{
+            model.addAttribute("userExists", false);
+        }
 
         return "home";
     
