@@ -3,7 +3,7 @@ package com.example.barclayspb7d.barclays_project.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "SavingAccount")
+@Table(name = "saving_account")
 public class SavingAccount {
     // Seq ID
     // Account Number
