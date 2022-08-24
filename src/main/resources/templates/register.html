@@ -20,6 +20,8 @@
 
     <h1>Register</h1>
 
+    <div class ="errorMessage"><b><p th:text="${errorMessages.errorMessage}" /></b></div>
+
     <form th:action="@{/register}" th:object="${register}" method="post">
 
         <label><b>Email</b></label> 

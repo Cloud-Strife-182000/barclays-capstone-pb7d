@@ -53,13 +53,14 @@ public class HomeController {
         }
 
         model.addAttribute("register", new User());
+        model.addAttribute("errorMessages", new ErrorMessage());
 
         return "register";
     
     }
 
     @PostMapping("/register")
-    public String registrationFormSubmit(@ModelAttribute User user, Model model){
+    public String registrationFormSubmit(@ModelAttribute User user, @ModelAttribute ErrorMessage errorMessages, Model model){
 
         model.addAttribute("register", user);
 
@@ -68,6 +69,11 @@ public class HomeController {
         User userData = userRepo.findByMailID(enteredmailID);
 
         if(userData != null){
+
+            errorMessages.setErrorMessage("Error: Email already taken.");
+
+            model.addAttribute("register", user);
+            model.addAttribute("errorMessages", errorMessages);
 
             model.addAttribute("register", user);
 
@@ -118,7 +124,7 @@ public class HomeController {
             model.addAttribute("login", user);
             model.addAttribute("errorMessages", errorMessages);
 
-             return "login";
+            return "login";
         }
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
