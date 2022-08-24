@@ -20,15 +20,23 @@ public class LoanRepaymentService {
 		return (loanAmount*monthlyInterest*(Math.pow((1+monthlyInterest), tenureInMonth)))/(Math.pow((1+monthlyInterest), tenureInMonth-1));
 	}
 
-	public double CalcIntrest() {
-		
-		return 0.0;
-	}
+	public double CalcIntrest(Double Outstanding , Double interestRate) {
+24
+                
+25
+                return (Outstanding*interestRate/1200);
+26
+        }
+27
   
-  	public double CalcPrincipal() {
-		
-		return 0.0;
-	}
+28
+        public double CalcPrincipal(Double EMI,Double InterestAmount) {
+29
+                
+30
+                return (EMI-InterestAmount);
+31
+        }
   	
 	public double CalcOutstanding() {
 		
