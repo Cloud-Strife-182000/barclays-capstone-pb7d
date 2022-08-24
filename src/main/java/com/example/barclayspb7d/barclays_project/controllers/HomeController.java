@@ -229,6 +229,12 @@ public class HomeController {
     @PostMapping("/loan")
     public String submitLoanDetails(HttpSession session, @ModelAttribute ErrorMessage errorMessages, @ModelAttribute LoanAccount loanAccount, @ModelAttribute LoanRepaymentSchedule schedule, Model model){
     
+        loanAccount.setMaxLoanGrant(70000.0);
+        loanAccount.setInterestRate(7.0);
+        loanAccount.setTenure(5);
+        loanAccount.setLoanAmount(0l);
+        loanAccount.setLoanStatus("PENDING");
+
         model.addAttribute("loan", loanAccount);
 
         User currUser = (User) session.getAttribute("curr_user");
