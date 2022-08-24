@@ -26,9 +26,9 @@
 
         <label><b>Name</b></label> 
         <input type="text" th:field="*{name}" placeholder="Name">
-        <br><br>  
+        <br><br> 
         <label><b>Account Number</b></label> 
-        <input type="number" maxlength="12" th:field="*{accNo}" placeholder="Account Number">
+        <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="12" th:field="*{accNo}" placeholder="Account Number">
         <br><br>  
         <label><b>Current Balance</b></label> 
         <input type="number" th:field="*{currBal}" placeholder="Current Balance">
