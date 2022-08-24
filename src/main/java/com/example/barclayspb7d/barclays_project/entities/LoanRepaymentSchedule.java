@@ -23,8 +23,8 @@ public class LoanRepaymentSchedule {
 	@Column(name = "Outstanding", nullable = false, unique = false)
 	private Double Outstanding;
 
-	@Column(name = "Intrest_Amount", nullable = false, unique = false)
-	private Double IntrestAmount;
+	@Column(name = "Interest_Amount", nullable = false, unique = false)
+	private Double InterestAmount;
 
   	@Column(name = "status", nullable = false, unique = false)
 	private String Status;
