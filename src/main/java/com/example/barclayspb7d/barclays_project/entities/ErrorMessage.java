@@ -1,7 +1,7 @@
-package com.example.barclayspb7d.barclays_project.services;
+package com.example.barclayspb7d.barclays_project.entities;
 
-public class ErrorMessageService{
-
+public class ErrorMessage {
+    
     private String errorMessage;
     private String secondaryErrorMessage;
     private String tertiaryErrorMessage;
@@ -32,6 +32,4 @@ public class ErrorMessageService{
     public void setTertiaryErrorMessage(String tertiaryErrorMessage) {
         this.tertiaryErrorMessage = tertiaryErrorMessage;
     }
-
-
 }

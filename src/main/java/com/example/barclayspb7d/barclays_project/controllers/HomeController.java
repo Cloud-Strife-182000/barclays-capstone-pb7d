@@ -1,6 +1,9 @@
 package com.example.barclayspb7d.barclays_project.controllers;
 
+import javax.servlet.http.HttpSession;
+
 import com.example.barclayspb7d.barclays_project.dao.UserRepository;
+import com.example.barclayspb7d.barclays_project.entities.ErrorMessage;
 import com.example.barclayspb7d.barclays_project.entities.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,13 +72,14 @@ public class HomeController {
     public String loginPage(Model model){
 
         model.addAttribute("login", new User());
+        model.addAttribute("errorMessages", new ErrorMessage());
 
         return "login";
     
     }
 
     @PostMapping("/login")
-    public String loginFormSubmit(@ModelAttribute User user, Model model){
+    public String loginFormSubmit(@ModelAttribute User user, @ModelAttribute ErrorMessage errorMessages, HttpSession session, Model model){
 
         model.addAttribute("login", user);
 
@@ -85,7 +89,12 @@ public class HomeController {
 
         if(userData == null){
 
-            return "login_failure";
+            errorMessages.setErrorMessage("Error: User not found.");
+
+            model.addAttribute("login", user);
+            model.addAttribute("errorMessages", errorMessages);
+
+             return "login";
         }
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -95,12 +104,23 @@ public class HomeController {
 
         successfulLogin = passwordEncoder.matches(enteredPassword, actualPassword);
 
-        if(!successfulLogin){
+        session.setAttribute("curr_user", userData);
 
-            return "login_failure";
+        if(successfulLogin){
+
+            //return "redirect:/account";
+
+            return "login_success";
         }
+        else{
 
-        return "login_success";
+            errorMessages.setErrorMessage("Error: Wrong password.");
+
+            model.addAttribute("login", user);
+            model.addAttribute("errorMessages", errorMessages);
+
+            return "login";
+        }
     
     }
 
