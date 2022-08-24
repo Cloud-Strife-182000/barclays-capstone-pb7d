@@ -43,7 +43,14 @@ public class HomeController {
     }
 
     @GetMapping("/register")
-    public String registrationPage(Model model){
+    public String registrationPage(HttpSession session, Model model){
+
+        User currUser = (User) session.getAttribute("curr_user");
+
+        if(currUser != null){
+            
+            return "redirect:/account";
+        }
 
         model.addAttribute("register", new User());
 
@@ -79,7 +86,14 @@ public class HomeController {
     }
 
     @GetMapping("/login")
-    public String loginPage(Model model){
+    public String loginPage(HttpSession session, Model model){
+
+        User currUser = (User) session.getAttribute("curr_user");
+
+        if(currUser != null){
+            
+            return "redirect:/account";
+        }
 
         model.addAttribute("login", new User());
         model.addAttribute("errorMessages", new ErrorMessage());
@@ -118,9 +132,7 @@ public class HomeController {
 
         if(successfulLogin){
 
-            //return "redirect:/account";
-
-            return "login_success";
+            return "redirect:/account";
         }
         else{
 
@@ -134,18 +146,37 @@ public class HomeController {
     
     }
 
-    @GetMapping("/login_success")
-    public String loginSuccessPage(Model model){
+    @GetMapping("/account")
+    public String accountPage(HttpSession session, Model model){
 
-        return "login_success";
-    
+        User currUser = (User) session.getAttribute("curr_user");
+
+        if(currUser != null){
+
+            model.addAttribute("curr_account", currUser);
+            
+            return "account";
+        }
+
+        return "redirect:/home";
     }
 
-    @GetMapping("/login_failure")
-    public String loginFailurePage(Model model){
+    @PostMapping("/account")
+    public String logOutOfAccount(HttpSession session, Model model){
 
-        return "login_failure";
-    
+        User currUser = (User) session.getAttribute("curr_user");
+
+        if(currUser == null){
+
+            return "redirect:/home";
+        }
+
+        currUser = null;
+
+        session.setAttribute("curr_user", null);
+        model.addAttribute("curr_account", null);
+
+        return "redirect:/home";
     }
     
 }
