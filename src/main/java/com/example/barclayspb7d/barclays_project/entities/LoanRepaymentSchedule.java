@@ -81,4 +81,22 @@ public class LoanRepaymentSchedule {
 	}
 
 
+	public Long getScheduleId() {
+		return this.scheduleId;
+	}
+
+	public void setScheduleId(Long scheduleId) {
+		this.scheduleId = scheduleId;
+	}
+
+	public String getMailID() {
+		return this.mailID;
+	}
+
+	public void setMailID(String mailID) {
+		this.mailID = mailID;
+	}
+
+
+
 }

@@ -260,6 +260,7 @@ public class HomeController {
         schedule.setOutstanding(0.0);
         schedule.setPrincipalAmount(0.0);
         schedule.setStatus(loanAccount.getLoanStatus());
+        schedule.setMailID(currUser.getMailID());
 
         loanRepo.save(loanAccount);
         scheduleRepo.save(schedule);
