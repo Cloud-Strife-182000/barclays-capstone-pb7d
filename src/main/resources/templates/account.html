@@ -46,6 +46,17 @@
         <label><b>Net Monthly Salary:</b></label>
         <p th:text="${curr_loanAccount.netMonthlySalary}" />
 
+        <h2>Loan Repayment Details:</h2>
+
+        <label><b>EMI:</b></label>
+        <p th:text="${curr_schedule.EMI}" />
+
+        <label><b>Interest:</b></label>
+        <p th:text="${curr_schedule.IntrestAmount}" />
+
+        <label><b>Outstanding:</b></label>
+        <p th:text="${curr_loanAccount.Outstanding}" />
+
     </div>
 
     <a th:if="${!loanAccountExists}" th:href="@{loan}"><button>Apply for Loan</button></a>

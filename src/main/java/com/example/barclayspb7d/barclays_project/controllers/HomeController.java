@@ -3,9 +3,11 @@ package com.example.barclayspb7d.barclays_project.controllers;
 import javax.servlet.http.HttpSession;
 
 import com.example.barclayspb7d.barclays_project.dao.LoanRepository;
+import com.example.barclayspb7d.barclays_project.dao.RepaymentRepository;
 import com.example.barclayspb7d.barclays_project.dao.UserRepository;
 import com.example.barclayspb7d.barclays_project.entities.ErrorMessage;
 import com.example.barclayspb7d.barclays_project.entities.LoanAccount;
+import com.example.barclayspb7d.barclays_project.entities.LoanRepaymentSchedule;
 import com.example.barclayspb7d.barclays_project.entities.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class HomeController {
 
     @Autowired
     private LoanRepository loanRepo;
+
+    @Autowired
+    private RepaymentRepository scheduleRepo;
 
     @GetMapping("/")
     public String redirectToHomePage(){
@@ -170,6 +175,10 @@ public class HomeController {
 
                 model.addAttribute("loanAccountExists", true);
                 model.addAttribute("curr_loanAccount", existingLoanAccount);
+
+                LoanRepaymentSchedule existingSchedule = scheduleRepo.findByMailID(currUser.getMailID());
+
+                model.addAttribute("curr_schedule", existingSchedule);
             }
             else{
                 model.addAttribute("loanAccountExists", false);
@@ -209,6 +218,7 @@ public class HomeController {
             model.addAttribute("curr_account", currUser);
             model.addAttribute("errorMessages", new ErrorMessage());
             model.addAttribute("loan", new LoanAccount(70000.0, 7.0, 5, 0l, "PENDING"));
+            model.addAttribute("schedule", new LoanRepaymentSchedule());
             
             return "loan";
         }
@@ -217,13 +227,8 @@ public class HomeController {
     }
 
     @PostMapping("/loan")
-    public String submitLoanDetails(HttpSession session, @ModelAttribute ErrorMessage errorMessages, @ModelAttribute LoanAccount loanAccount, Model model){
-
-        loanAccount.setMaxLoanGrant(700000.0);
-        loanAccount.setInterestRate(7.0);
-        loanAccount.setTenure(5);
-        loanAccount.setLoanStatus("PENDING");
-
+    public String submitLoanDetails(HttpSession session, @ModelAttribute ErrorMessage errorMessages, @ModelAttribute LoanAccount loanAccount, @ModelAttribute LoanRepaymentSchedule schedule, Model model){
+    
         model.addAttribute("loan", loanAccount);
 
         User currUser = (User) session.getAttribute("curr_user");
@@ -241,10 +246,20 @@ public class HomeController {
             
         }
 
-        model.addAttribute("loan", loanAccount);
+        //calculate repayment attributes
+
+        schedule.setEMI(0.0);
+        schedule.setIntrestAmount(0.0);
+        schedule.setMonths(0l);
+        schedule.setOutstanding(0.0);
+        schedule.setPrincipalAmount(0.0);
+        schedule.setStatus(loanAccount.getLoanStatus());
 
         loanRepo.save(loanAccount);
+        scheduleRepo.save(schedule);
 
+        model.addAttribute("loan", loanAccount);
+        
         return "redirect:/home";
     }
     

@@ -5,10 +5,14 @@ import javax.persistence.*;
 @Entity
 @Table(name = "LoanRepaymentSchedule")
 public class LoanRepaymentSchedule {
-	
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "loan_id")
-    private LoanAccount loanAccount;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "schedule_id", unique = true, nullable = false)
+	private Long scheduleId;
+
+    @Column(nullable = false, unique = true, length = 255)
+    private String mailID;
 
 	@Column(name = "EMI", nullable = false, unique = false)
 	private Double EMI;
@@ -26,15 +30,7 @@ public class LoanRepaymentSchedule {
 	private String Status;
   	
 	@Column(name = "Months", nullable = false, unique = false)
-	private Double Months;
-
-	public LoanAccount getLoanAccount() {
-		return this.loanAccount;
-	}
-
-	public void setLoanAccount(LoanAccount loanAccount) {
-		this.loanAccount = loanAccount;
-	}
+	private Long Months;
 
 	public Double getEMI() {
 		return this.EMI;
@@ -76,11 +72,11 @@ public class LoanRepaymentSchedule {
 		this.Status = Status;
 	}
 
-	public Double getMonths() {
+	public Long getMonths() {
 		return this.Months;
 	}
 
-	public void setMonths(Double Months) {
+	public void setMonths(Long Months) {
 		this.Months = Months;
 	}
 
