@@ -11,19 +11,21 @@
   <a th:href="@{home}" class="logo">CompanyLogo</a>
   <div class="header-right">
     <a class="active" th:href="@{home}">Home</a>
-    <div th:if="${!userExists}"><a th:href="@{register}">Register</a></div>
-    <div th:if="${!userExists}"><a th:href="@{login}">Login</a></div>
-    <div th:if="${userExists}"><a th:href="@{account}">Your Account</a></div>
+    <a th:if="${!userExists}" th:href="@{register}">Register</a>
+    <a th:if="${!userExists}" th:href="@{login}">Login</a>
+    <a th:if="${userExists}" th:href="@{account}">Your Account</a>
   </div>
 </div>
 
 <div style="padding-left:20px">
 
-  <h1>Hello World!</h1>
+    <h1>Hello World!</h1>
 
     <a th:href="@{register}">Register</a>
     
     <a th:href="@{login}">Login</a>
+
+    <br>
 
 </div>
 

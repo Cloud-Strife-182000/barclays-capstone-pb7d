@@ -20,8 +20,6 @@
 
     <h1>Login</h1>
 
-    <br>
-
     <div class ="errorMessage"><b><p th:text="${errorMessages.errorMessage}" /></b></div>
 
     <form th:action="@{/login}" th:object="${login}" method="post">    

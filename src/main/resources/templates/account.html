@@ -17,7 +17,20 @@
 
 <div style="padding-left:20px">
 
-  <h1>Your Account</h1>
+    <h1>Your Account</h1>
+
+    <h2>Account Details:</h2>
+
+    <p>Name:</p><p th:text="${curr_account.name}" />
+    <p>Account Number:</p><p th:text="${curr_account.accNo}" />
+    <p>Current Balance:</p><p th:text="${curr_account.currBal}" />
+    <p>Mail ID:</p><p th:text="${curr_account.mailID}" />
+
+    <form action="#" th:action="@{/account}" method="post">
+        <input type="submit" value="Log Out">
+    </form>
+
+    <br>
 
 </div>
 
