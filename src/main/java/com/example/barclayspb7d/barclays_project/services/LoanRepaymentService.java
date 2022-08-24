@@ -21,22 +21,12 @@ public class LoanRepaymentService {
 	}
 
 	public double CalcIntrest(Double Outstanding , Double interestRate) {
-24
-                
-25
-                return (Outstanding*interestRate/1200);
-26
-        }
-27
-  
-28
-        public double CalcPrincipal(Double EMI,Double InterestAmount) {
-29
-                
-30
-                return (EMI-InterestAmount);
-31
-        }
+		return (Outstanding*interestRate/1200);
+	}
+
+	public double CalcPrincipal(Double EMI,Double InterestAmount) {
+		return (EMI-InterestAmount);
+	}
   	
 	public double CalcOutstanding(double EMI, double Principal) {
 		
