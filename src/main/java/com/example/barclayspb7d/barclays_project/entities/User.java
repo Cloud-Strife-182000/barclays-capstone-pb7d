@@ -18,20 +18,20 @@ public class User {
     private String password;
 
     @Column(nullable = false, unique = false, length = 255)
-    private String Name;
+    private String name;
 
     @Column(nullable = false, unique = false, length = 12)
-    private String AccNo;
+    private String accNo;
 
     @Column(nullable = false, unique = false)
     private Long currBal;
 
     public String getAccNo() {
-        return this.AccNo;
+        return this.accNo;
     }
 
-    public void setAccNo(String AccNo) {
-        this.AccNo = AccNo;
+    public void setAccNo(String accNo) {
+        this.accNo = accNo;
     }
 
     public Long getCurrBal() {
@@ -67,11 +67,11 @@ public class User {
     }
 
     public String getName() {
-        return this.Name;
+        return this.name;
     }
 
-    public void setName(String Name) {
-        this.Name = Name;
+    public void setName(String name) {
+        this.name = name;
     }
 
 }
