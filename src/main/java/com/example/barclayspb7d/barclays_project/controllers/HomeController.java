@@ -9,6 +9,7 @@ import com.example.barclayspb7d.barclays_project.entities.ErrorMessage;
 import com.example.barclayspb7d.barclays_project.entities.LoanAccount;
 import com.example.barclayspb7d.barclays_project.entities.LoanRepaymentSchedule;
 import com.example.barclayspb7d.barclays_project.entities.User;
+import com.example.barclayspb7d.barclays_project.services.LoanRepaymentService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -254,7 +255,9 @@ public class HomeController {
 
         //calculate repayment attributes
 
-        schedule.setEMI(0.0);
+        Double CalculatedEMI = LoanRepaymentService.CalcEmi(loanAccount.getInterestRate(), loanAccount.getTenure(), loanAccount.getLoanAmount());
+
+        schedule.setEMI(CalculatedEMI);
         schedule.setIntrestAmount(0.0);
         schedule.setMonths(0l);
         schedule.setOutstanding(0.0);
@@ -267,7 +270,19 @@ public class HomeController {
 
         model.addAttribute("loan", loanAccount);
         
-        return "redirect:/home";
+        return "redirect:/congratulations";
+    }
+
+    @GetMapping("/congratulations")
+    public String congratsPage(){
+
+        return "congratulations";
+    }
+
+    @PostMapping("/congratulations")
+    public String exitCongratsPage(){
+
+        return "redirect:/account";
     }
     
 }
