@@ -78,9 +78,30 @@
         <label><b>Months:</b></label>
         <p th:text="${curr_schedule.Months}" />
 
+        <table>
+          <tr>
+            <th>Month</th>
+            <th>EMI</th>
+            <th>Principal</th>
+            <th>Interest</th>
+            <th>Balance</th>
+          </tr>
+          <tr th:each="entry : ${scheduleList}">
+            <td th:text="${entry.month}"></td>
+            <td th:text="${entry.emi}"></td>
+            <td th:text="${entry.principal}"></td>
+            <td th:text="${entry.interest}"></td>
+            <td th:text="${entry.balance}"></td>
+          </tr>
+        <table>
+
     </div>
 
+    <br><br>
+
     <a th:if="${!loanAccountExists}" th:href="@{loan}"><button>Apply for Loan</button></a>
+
+    <a th:if="${loanAccountExists}" th:href="@{export_schedule}"><button>Export Schedule</button></a>
 
     <a th:if="${loanAccountExists}" th:href="@{prepayment}"><button>Loan Prepayment</button></a>
 
@@ -92,7 +113,7 @@
         <input type="submit" value="Log Out">
     </form>
 
-    <br>
+    <br><br>
 
 </div>
 

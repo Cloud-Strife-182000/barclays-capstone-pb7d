@@ -15,9 +15,14 @@ public class LoanRepaymentService {
 	RepaymentRepository LoanRepaymentRepository;
 	
 	public static double CalcEmi(Double interestRate, Integer tenure, Long loanAmount) {
+
 		Double monthlyInterest = interestRate/1200;
-		Integer tenureInMonth = tenure*12;
-		return (loanAmount*monthlyInterest*(Math.pow((1+monthlyInterest), tenureInMonth)))/(Math.pow((1+monthlyInterest), tenureInMonth-1));
+		Double tenureInMonth = Double.valueOf(tenure*12);
+
+		Double numerator = loanAmount * monthlyInterest * (Math.pow((1+monthlyInterest), tenureInMonth));
+		Double denominator = Math.pow((1+monthlyInterest), tenureInMonth) - 1;
+
+		return numerator/denominator;
 	}
 
 	public static double CalcIntrest(Double Outstanding , Double interestRate) {
@@ -28,9 +33,9 @@ public class LoanRepaymentService {
 		return (EMI-InterestAmount);
 	}
   	
-	public static double CalcOutstanding(double EMI, double Principal) {
+	public static double CalcOutstanding(double Outstanding, double Principal) {
 		
-		return(EMI-Principal);
+		return(Outstanding-Principal);
 	}
 
 }

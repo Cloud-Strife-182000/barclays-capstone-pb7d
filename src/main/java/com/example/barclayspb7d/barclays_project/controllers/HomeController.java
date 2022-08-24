@@ -1,5 +1,10 @@
 package com.example.barclayspb7d.barclays_project.controllers;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.example.barclayspb7d.barclays_project.dao.LoanRepository;
@@ -8,11 +13,16 @@ import com.example.barclayspb7d.barclays_project.dao.UserRepository;
 import com.example.barclayspb7d.barclays_project.entities.ErrorMessage;
 import com.example.barclayspb7d.barclays_project.entities.LoanAccount;
 import com.example.barclayspb7d.barclays_project.entities.LoanRepaymentSchedule;
+import com.example.barclayspb7d.barclays_project.entities.ScheduleEntry;
 import com.example.barclayspb7d.barclays_project.entities.User;
 import com.example.barclayspb7d.barclays_project.services.LoanAccountService;
 import com.example.barclayspb7d.barclays_project.services.LoanRepaymentService;
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +41,8 @@ public class HomeController {
 
     @Autowired
     private RepaymentRepository scheduleRepo;
+
+    private List<ScheduleEntry> scheduleList = new ArrayList<ScheduleEntry>();
 
     @GetMapping("/")
     public String redirectToHomePage(){
@@ -175,12 +187,58 @@ public class HomeController {
 
             if(existingLoanAccount != null){
 
+                scheduleList.clear();
+
                 model.addAttribute("loanAccountExists", true);
                 model.addAttribute("curr_loanAccount", existingLoanAccount);
 
                 LoanRepaymentSchedule existingSchedule = scheduleRepo.findByMailID(currUser.getMailID());
 
+                long months = existingSchedule.getMonths();
+                long updatedMonths = existingSchedule.getMonths();
+
+                ScheduleEntry se = new ScheduleEntry();
+
+                se.setBalance(existingSchedule.getOutstanding());
+                se.setEmi(existingSchedule.getEMI());
+                se.setInterest(existingSchedule.getInterestAmount());
+                se.setMonth(0);
+                se.setPrincipal(existingSchedule.getPrincipalAmount());
+
+                scheduleList.add(se);
+
+                for(int i=1; i<months+1; i++){
+
+                    ScheduleEntry s = new ScheduleEntry();
+
+                    Double calculatedOutstanding = LoanRepaymentService.CalcOutstanding(scheduleList.get(i-1).getBalance(), scheduleList.get(i-1).getPrincipal());
+                    Double calculatedInterest = LoanRepaymentService.CalcIntrest(calculatedOutstanding, existingLoanAccount.getInterestRate());
+                    Double calculatedPrincipal = LoanRepaymentService.CalcPrincipal(existingSchedule.getEMI(), calculatedInterest);
+
+                    if(calculatedOutstanding < 1) calculatedOutstanding = 0.0;
+                    if(calculatedInterest < 1) calculatedInterest = 0.0;
+
+                    s.setBalance(calculatedOutstanding);
+                    s.setEmi(existingSchedule.getEMI());
+                    s.setInterest(calculatedInterest);
+                    s.setMonth(i);
+                    s.setPrincipal(calculatedPrincipal);
+
+                    scheduleList.add(s);
+
+                    if(calculatedOutstanding < 1){
+
+                        updatedMonths = i+1;
+                        break;
+                    }
+                }
+
+                scheduleRepo.updateMonths(updatedMonths, currUser.getMailID());
+                existingSchedule.setMonths(updatedMonths);
+
                 model.addAttribute("curr_schedule", existingSchedule);
+
+                model.addAttribute("scheduleList", scheduleList);
             }
             else{
                 model.addAttribute("loanAccountExists", false);
@@ -387,4 +445,25 @@ public class HomeController {
         }
     }
     
+    @GetMapping("/export_schedule")
+    public void exportCSV(HttpServletResponse response) throws Exception {
+
+        //set file name and content type
+        String filename = "schedule.csv";
+
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + filename + "\"");
+
+        //create a csv writer
+        StatefulBeanToCsv<ScheduleEntry> writer = new StatefulBeanToCsvBuilder<ScheduleEntry>(response.getWriter())
+                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+                .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+                .withOrderedResults(true)
+                .build();
+
+        //write all users to csv file
+        writer.write(scheduleList);
+                
+    }
 }
