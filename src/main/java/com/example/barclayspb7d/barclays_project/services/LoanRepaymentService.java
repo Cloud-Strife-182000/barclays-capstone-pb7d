@@ -24,11 +24,12 @@ public class LoanRepaymentService {
 		return 0.0;
 	}
   
-  public double CalcPrincipal() {
+  	public double CalcPrincipal() {
 		
 		return 0.0;
 	}
-  public double CalcOutstanding() {
+  	
+	public double CalcOutstanding() {
 		
 		return 0.0;
 	}
