@@ -3,13 +3,16 @@ package com.example.barclayspb7d.barclays_project.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "LoanAccount")
+@Table(name = "loan_account")
 public class LoanAccount {
+    
     @Id
-	@Column(name = "loan_id")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "loan_gen")
-	@SequenceGenerator(name = "loan_gen", sequenceName = "loan_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "loan_id", unique = true, nullable = false)
 	private Long loanId;
+
+    @Column(nullable = false, unique = true, length = 255)
+    private String mailID;
 
 	@Column(name = "max_loan_grant", nullable = false, unique = false)
 	private Double maxLoanGrant;
@@ -25,6 +28,43 @@ public class LoanAccount {
 
     @Column(name = "loan_status", nullable = false, unique = false)
 	private String loanStatus;
+
+    @Column(name = "address", nullable = false, unique = false)
+	private String loanAddress;
+
+    @Column(name = "net_monthly_salary", nullable = false, unique = false)
+	private Long netMonthlySalary;
+
+    public void setLoanId(Long loanId) {
+        this.loanId = loanId;
+    }
+    public void setInterestRate(Double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public String getMailID() {
+        return this.mailID;
+    }
+
+    public void setMailID(String mailID) {
+        this.mailID = mailID;
+    }
+
+    public String getLoanAddress() {
+        return this.loanAddress;
+    }
+
+    public void setLoanAddress(String loanAddress) {
+        this.loanAddress = loanAddress;
+    }
+
+    public Long getNetMonthlySalary() {
+        return this.netMonthlySalary;
+    }
+
+    public void setNetMonthlySalary(Long netMonthlySalary) {
+        this.netMonthlySalary = netMonthlySalary;
+    }
 
 	@OneToOne(targetEntity = User.class)
 	private User user;
@@ -47,7 +87,7 @@ public class LoanAccount {
 		this.interestRate = 7.0;
 		this.tenure = tenure;
 		this.loanAmount = loanAmount;
-        this.loanStatus = "PPENDING";
+        this.loanStatus = "PENDING";
 	}
 
 	@Override
@@ -92,7 +132,7 @@ public class LoanAccount {
 		return loanStatus;
 	}
 
-	public void setTenure(String loanStatus) {
+	public void setLoanStatus(String loanStatus) {
 		this.loanStatus = loanStatus;
 	}
 

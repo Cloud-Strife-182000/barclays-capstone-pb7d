@@ -2,8 +2,10 @@ package com.example.barclayspb7d.barclays_project.controllers;
 
 import javax.servlet.http.HttpSession;
 
+import com.example.barclayspb7d.barclays_project.dao.LoanRepository;
 import com.example.barclayspb7d.barclays_project.dao.UserRepository;
 import com.example.barclayspb7d.barclays_project.entities.ErrorMessage;
+import com.example.barclayspb7d.barclays_project.entities.LoanAccount;
 import com.example.barclayspb7d.barclays_project.entities.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class HomeController {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private LoanRepository loanRepo;
 
     @GetMapping("/")
     public String redirectToHomePage(){
@@ -74,8 +79,6 @@ public class HomeController {
 
             model.addAttribute("register", user);
             model.addAttribute("errorMessages", errorMessages);
-
-            model.addAttribute("register", user);
 
             return "register";
         }
@@ -159,7 +162,18 @@ public class HomeController {
 
         if(currUser != null){
 
+            LoanAccount existingLoanAccount = loanRepo.findByMailID(currUser.getMailID());
+            
             model.addAttribute("curr_account", currUser);
+
+            if(existingLoanAccount != null){
+
+                model.addAttribute("loanAccountExists", true);
+                model.addAttribute("curr_loanAccount", existingLoanAccount);
+            }
+            else{
+                model.addAttribute("loanAccountExists", false);
+            }
             
             return "account";
         }
@@ -193,9 +207,43 @@ public class HomeController {
         if(currUser != null){
 
             model.addAttribute("curr_account", currUser);
+            model.addAttribute("errorMessages", new ErrorMessage());
+            model.addAttribute("loan", new LoanAccount(70000.0, 7.0, 5, 0l, "PENDING"));
             
             return "loan";
         }
+
+        return "redirect:/home";
+    }
+
+    @PostMapping("/loan")
+    public String submitLoanDetails(HttpSession session, @ModelAttribute ErrorMessage errorMessages, @ModelAttribute LoanAccount loanAccount, Model model){
+
+        loanAccount.setMaxLoanGrant(700000.0);
+        loanAccount.setInterestRate(7.0);
+        loanAccount.setTenure(5);
+        loanAccount.setLoanStatus("PENDING");
+
+        model.addAttribute("loan", loanAccount);
+
+        User currUser = (User) session.getAttribute("curr_user");
+
+        loanAccount.setMailID(currUser.getMailID());
+
+        LoanAccount existingLoan = loanRepo.findByMailID(currUser.getMailID());
+
+        if(existingLoan != null){
+
+            errorMessages.setErrorMessage("There is already an existing loan.");
+
+            model.addAttribute("loan", loanAccount);
+            model.addAttribute("errorMessages", errorMessages);
+            
+        }
+
+        model.addAttribute("loan", loanAccount);
+
+        loanRepo.save(loanAccount);
 
         return "redirect:/home";
     }

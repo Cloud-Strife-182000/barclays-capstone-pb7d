@@ -19,7 +19,7 @@
 
     <h1>Your Account</h1>
 
-    <h2>Account Details:</h2>
+    <h2>Savings Account Details:</h2>
 
     <label><b>Name:</b></label>
     <p th:text="${curr_account.name}" />
@@ -33,7 +33,22 @@
     <label><b>Mail ID:</b></label>
     <p th:text="${curr_account.mailID}" />
 
-    <a th:href="@{loan}"><button>Apply for Loan</button></a>
+    <div th:if="${loanAccountExists}">
+
+        <h2>Loan Account Details:</h2>
+
+        <label><b>Loan Amount:</b></label>
+        <p th:text="${curr_loanAccount.loanAmount}" />
+
+        <label><b>Loan Address:</b></label>
+        <p th:text="${curr_loanAccount.loanAddress}" />
+
+        <label><b>Net Monthly Salary:</b></label>
+        <p th:text="${curr_loanAccount.netMonthlySalary}" />
+
+    </div>
+
+    <a th:if="${!loanAccountExists}" th:href="@{loan}"><button>Apply for Loan</button></a>
 
     <br><br>
 

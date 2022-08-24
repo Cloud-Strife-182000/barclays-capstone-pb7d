@@ -19,6 +19,24 @@
 
     <h1>Apply for Home Loan:</h1>
 
+    <div class ="errorMessage"><b><p th:text="${errorMessages.errorMessage}" /></b></div>
+
+    <form th:action="@{/loan}" th:object="${loan}" method="post">
+
+        <label><b>Loan Amount:</b></label> 
+        <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" th:field="*{loanAmount}" placeholder="Loan Amount">
+        <br><br>  
+        <label><b>Address for Home Loan:</b></label> 
+        <input type="text" th:field="*{loanAddress}" placeholder="Home Loan Address">
+        <br><br>    
+        <label><b>Net Monthly Salary</b></label> 
+        <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" th:field="*{netMonthlySalary}" placeholder="Net Monthly Salary">
+        <br><br>  
+        <input type="submit" value="Submit">
+        <br><br>  
+
+    </form>
+
 </div>
 
 <footer>
