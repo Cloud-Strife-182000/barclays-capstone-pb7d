@@ -312,6 +312,7 @@ public class HomeController {
         User currUser = (User) session.getAttribute("curr_user");
 
         LoanRepaymentSchedule schedule = scheduleRepo.findByMailID(currUser.getMailID());
+        LoanAccount loanAccount = loanRepo.findByMailID(currUser.getMailID());
 
         Double EMIAmount = schedule.getEMI();
         Double prepaymentAmount = prepayment.getLoanAmount().doubleValue();
@@ -321,7 +322,15 @@ public class HomeController {
             
             newOutstanding = LoanAccountService.LoanPrePayment(prepaymentAmount, schedule.getOutstanding());
 
+            Double CalculatedInterest = LoanRepaymentService.CalcIntrest(newOutstanding, loanAccount.getInterestRate());
+            Double CalculatedPrincipal = LoanRepaymentService.CalcPrincipal(schedule.getEMI(), CalculatedInterest);
+            Double monthsDeduction = prepaymentAmount/EMIAmount;
+            Long calculatedMonths = schedule.getMonths() - monthsDeduction.longValue();
+
             scheduleRepo.updateOutstandingAmount(newOutstanding, currUser.getMailID());
+            scheduleRepo.updateInterestAmount(CalculatedInterest, currUser.getMailID());
+            scheduleRepo.updatePrincipalAmount(CalculatedPrincipal, currUser.getMailID());
+            scheduleRepo.updateMonths(calculatedMonths, currUser.getMailID());
 
             return "redirect:/account";
         }
@@ -333,6 +342,48 @@ public class HomeController {
             model.addAttribute("errorMessages", errorMessages);
 
             return "prepayment";
+        }
+    }
+
+    @GetMapping("/foreclosure")
+    public String foreclosure(Model model){
+
+        model.addAttribute("errorMessages", new ErrorMessage());
+
+        return "foreclosure";
+    }
+
+    @PostMapping("/foreclosure")
+    public String foreclosureSubmit(Model model, @ModelAttribute ErrorMessage errorMessages, HttpSession session){
+
+        model.addAttribute("errorMessages", errorMessages);
+
+        User currUser = (User) session.getAttribute("curr_user");
+
+        LoanRepaymentSchedule schedule = scheduleRepo.findByMailID(currUser.getMailID());
+        LoanAccount loanAccount = loanRepo.findByMailID(currUser.getMailID());
+
+        long tenure = loanAccount.getTenure().longValue();
+        long months = schedule.getMonths();
+
+        if((tenure * 12 - months) >= 3){
+
+            scheduleRepo.updatePrincipalAmount(0.0, currUser.getMailID());
+            scheduleRepo.updateInterestAmount(0.0, currUser.getMailID());
+
+            scheduleRepo.updateStatus("CANCELLED", currUser.getMailID());
+
+            loanRepo.updateStatus("CLOSED", currUser.getMailID());
+
+            return "redirect:/account";
+        }
+        else{
+           
+            errorMessages.setErrorMessage("You need to pay minimum 3 EMIs to foreclose your account.");
+
+            model.addAttribute("errorMessages", errorMessages);
+
+            return "foreclosure";
         }
     }
     

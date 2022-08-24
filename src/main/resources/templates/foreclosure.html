@@ -17,18 +17,19 @@
 
 <div style="padding-left:20px">
 
-    <h1>Prepayment:</h1>
+    <h1>Foreclosure:</h1>
 
     <div class ="errorMessage"><b><p th:text="${errorMessages.errorMessage}" /></b></div>
 
-    <form th:action="@{/prepayment}" th:object="${prepayment}" method="post">
+    <form th:action="@{/foreclosure}" th:object="${foreclosure}" method="post">
 
-        <label><b>Prepayment Amount:</b></label> 
-        <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" th:field="*{loanAmount}" placeholder="Loan Amount">
+        <label><b>Are you sure you want to foreclose your account?</b></label>
 
-        <input type="submit" value="Submit">
+        <input type="submit" value="Yes">
 
     </form>
+
+    <a th:href="@{account}"><button>No</button></a>
 
     <br><br>
 

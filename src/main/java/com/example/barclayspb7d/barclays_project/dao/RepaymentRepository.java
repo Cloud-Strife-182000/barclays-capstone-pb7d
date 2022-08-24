@@ -15,6 +15,26 @@ public interface RepaymentRepository extends JpaRepository<LoanRepaymentSchedule
 
     @Modifying
     @Transactional
-    @Query("UPDATE LoanRepaymentSchedule l SET l.Outstanding = ?2 WHERE l.mailID = ?1")
+    @Query("UPDATE LoanRepaymentSchedule l SET l.Outstanding = ?1 WHERE l.mailID = ?2")
     public void updateOutstandingAmount(Double newOutstanding, String mailID);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE LoanRepaymentSchedule l SET l.PrincipalAmount = ?1 WHERE l.mailID = ?2")
+    public void updatePrincipalAmount(Double newPrincipalAmount, String mailID);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE LoanRepaymentSchedule l SET l.InterestAmount = ?1 WHERE l.mailID = ?2")
+    public void updateInterestAmount(Double newInterestAmount, String mailID);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE LoanRepaymentSchedule l SET l.Months = ?1 WHERE l.mailID = ?2")
+    public void updateMonths(Long newMonths, String mailID);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE LoanRepaymentSchedule l SET l.Status = ?1 WHERE l.mailID = ?2")
+    public void updateStatus(String newStatus, String mailID);
 }
