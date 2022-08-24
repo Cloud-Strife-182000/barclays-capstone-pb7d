@@ -14,9 +14,10 @@ public class LoanRepaymentService {
 	@Autowired
 	RepaymentRepository LoanRepaymentRepository;
 	
-	public double CalcEmi() {
-		
-		return 0.0;
+	public double CalcEmi(Double interestRate, Integer tenure, Long loanAmount) {
+		Double monthlyInterest = interestRate/1200;
+		Integer tenureInMonth = tenure*12;
+		return (loanAmount*monthlyInterest*(Math.pow((1+monthlyInterest), tenureInMonth)))/(Math.pow((1+monthlyInterest), tenureInMonth-1));
 	}
 
 	public double CalcIntrest() {
