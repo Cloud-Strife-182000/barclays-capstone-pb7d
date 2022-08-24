@@ -63,4 +63,9 @@ footer {
 
 .errorMessage {
     color:red;
-  }
+}
+
+label {
+    display: inline-block;
+    width: 80px;
+}
