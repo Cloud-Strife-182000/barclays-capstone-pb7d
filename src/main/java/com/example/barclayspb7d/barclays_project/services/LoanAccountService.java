@@ -2,17 +2,17 @@ package com.example.barclayspb7d.barclays_project.services;
 
 import javax.transaction.Transactional;
 
-import com.example.barclayspb7d.barclays_project.dao.RepaymentRepository;
+import com.example.barclayspb7d.barclays_project.dao.LoanRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
-public class LoanRepaymentService {
+public class LoanAccountService {
 
 	@Autowired
-	RepaymentRepository LoanRepaymentRepository;
+	LoanRepository LoanRepository;
 	
 	public static double CalcEmi(Double interestRate, Integer tenure, Long loanAmount) {
 		Double monthlyInterest = interestRate/12;
@@ -20,17 +20,12 @@ public class LoanRepaymentService {
 		return (loanAmount*monthlyInterest*(Math.pow((1+monthlyInterest), tenureInMonth)))/(Math.pow((1+monthlyInterest), tenureInMonth-1));
 	}
 
-	public double CalcIntrest(Double Outstanding , Double interestRate) {
-		return (Outstanding*interestRate/1200);
-	}
+	public double LoanPrePayment(Double EMI , Double Outstanding ) {
+                return 0.0;
+        }
 
-	public double CalcPrincipal(Double EMI,Double InterestAmount) {
-		return (EMI-InterestAmount);
-	}
+        public double LoanForeclosure(Double EMI,Double InterestAmount) {
+                return 0.0;
+        }
   	
-	public double CalcOutstanding(double EMI, double Principal) {
-		
-		return(EMI-Principal);
-	}
-
 }
