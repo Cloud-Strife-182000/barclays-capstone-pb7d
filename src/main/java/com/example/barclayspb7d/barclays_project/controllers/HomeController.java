@@ -10,6 +10,7 @@ import com.example.barclayspb7d.barclays_project.entities.LoanAccount;
 import com.example.barclayspb7d.barclays_project.entities.LoanRepaymentSchedule;
 import com.example.barclayspb7d.barclays_project.entities.User;
 import com.example.barclayspb7d.barclays_project.services.LoanRepaymentService;
+import com.fasterxml.jackson.databind.node.DoubleNode;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -218,7 +219,7 @@ public class HomeController {
 
             model.addAttribute("curr_account", currUser);
             model.addAttribute("errorMessages", new ErrorMessage());
-            model.addAttribute("loan", new LoanAccount(70000.0, 7.0, 5, 0l, "PENDING"));
+            model.addAttribute("loan", new LoanAccount(5000000.0, 12.0, 10, 0l, "PENDING"));
             model.addAttribute("schedule", new LoanRepaymentSchedule());
             
             return "loan";
@@ -230,10 +231,10 @@ public class HomeController {
     @PostMapping("/loan")
     public String submitLoanDetails(HttpSession session, @ModelAttribute ErrorMessage errorMessages, @ModelAttribute LoanAccount loanAccount, @ModelAttribute LoanRepaymentSchedule schedule, Model model){
     
-        loanAccount.setMaxLoanGrant(70000.0);
-        loanAccount.setInterestRate(7.0);
-        loanAccount.setTenure(5);
-        loanAccount.setLoanStatus("PENDING");
+        loanAccount.setMaxLoanGrant(5000000.0);
+        loanAccount.setInterestRate(12.0);
+        loanAccount.setTenure(10);
+        loanAccount.setLoanStatus("APPROVED");
 
         model.addAttribute("loan", loanAccount);
 
@@ -254,13 +255,18 @@ public class HomeController {
 
         //calculate repayment attributes
 
+        schedule.setOutstanding(loanAccount.getLoanAmount().doubleValue());
+
         Double CalculatedEMI = LoanRepaymentService.CalcEmi(loanAccount.getInterestRate(), loanAccount.getTenure(), loanAccount.getLoanAmount());
+        Double CalculatedInterest = LoanRepaymentService.CalcIntrest(schedule.getOutstanding(), loanAccount.getInterestRate());
+        Double CalculatedPrincipal = LoanRepaymentService.CalcPrincipal(CalculatedEMI, CalculatedInterest);
+        Double CalculatedOutstanding = LoanRepaymentService.CalcOutstanding(CalculatedEMI, CalculatedPrincipal);
 
         schedule.setEMI(CalculatedEMI);
-        schedule.setInterestAmount(0.0);
+        schedule.setInterestAmount(CalculatedInterest);
+        schedule.setOutstanding(CalculatedOutstanding);
         schedule.setMonths(0l);
-        schedule.setOutstanding(0.0);
-        schedule.setPrincipalAmount(0.0);
+        schedule.setPrincipalAmount(CalculatedPrincipal);
         schedule.setStatus(loanAccount.getLoanStatus());
         schedule.setMailID(currUser.getMailID());
 

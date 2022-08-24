@@ -15,7 +15,7 @@ public class LoanAccountService {
 	LoanRepository LoanRepository;
 	
 	public static double CalcEmi(Double interestRate, Integer tenure, Long loanAmount) {
-		Double monthlyInterest = interestRate/12;
+		Double monthlyInterest = interestRate/1200;
 		Integer tenureInMonth = tenure*12;
 		return (loanAmount*monthlyInterest*(Math.pow((1+monthlyInterest), tenureInMonth)))/(Math.pow((1+monthlyInterest), tenureInMonth-1));
 	}
