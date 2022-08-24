@@ -38,9 +38,9 @@ public class LoanRepaymentService {
 31
         }
   	
-	public double CalcOutstanding() {
+	public double CalcOutstanding(double EMI, double Principal) {
 		
-		return 0.0;
+		return(EMI-Principal);
 	}
 
 }
