@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+
+<div class="header">
+  <a th:href="@{home}" class="logo">PB7D - Home Loan</a>
+  <div class="header-right">
+    <a th:href="@{home}">Home</a>
+    <a class="active" th:href="@{account}">Your Account</a>
+  </div>
+</div>
+
+<div style="padding-left:20px">
+
+    <h1>Prepayment:</h1>
+
+    <div class ="errorMessage"><b><p th:text="${errorMessages.errorMessage}" /></b></div>
+
+    <form th:action="@{/prepayment}" th:object="${prepayment}" method="post">
+
+        <label><b>Prepayment Amount:</b></label> 
+        <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" th:field="*{loanAmount}" placeholder="Loan Amount">
+
+        <input type="submit" value="Submit">
+
+    </form>
+
+</div>
+
+<footer>
+    <p>Footer<br></p>
+</footer>
+
+</body>
+</html>

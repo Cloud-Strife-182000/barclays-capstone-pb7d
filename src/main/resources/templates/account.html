@@ -82,6 +82,10 @@
 
     <a th:if="${!loanAccountExists}" th:href="@{loan}"><button>Apply for Loan</button></a>
 
+    <a th:if="${loanAccountExists}" th:href="@{prepayment}"><button>Loan Prepayment</button></a>
+
+    <a th:if="${loanAccountExists}" th:href="@{foreclosure}"><button>Loan Foreclosure</button></a>
+
     <br><br>
 
     <form action="#" th:action="@{/account}" method="post">

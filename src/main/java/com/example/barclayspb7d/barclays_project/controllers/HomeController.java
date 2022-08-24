@@ -9,8 +9,8 @@ import com.example.barclayspb7d.barclays_project.entities.ErrorMessage;
 import com.example.barclayspb7d.barclays_project.entities.LoanAccount;
 import com.example.barclayspb7d.barclays_project.entities.LoanRepaymentSchedule;
 import com.example.barclayspb7d.barclays_project.entities.User;
+import com.example.barclayspb7d.barclays_project.services.LoanAccountService;
 import com.example.barclayspb7d.barclays_project.services.LoanRepaymentService;
-import com.fasterxml.jackson.databind.node.DoubleNode;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -251,6 +251,17 @@ public class HomeController {
             model.addAttribute("loan", loanAccount);
             model.addAttribute("errorMessages", errorMessages);
             
+            return "loan";
+        }
+
+        if(loanAccount.getMaxLoanGrant() < loanAccount.getLoanAmount()){
+
+            errorMessages.setErrorMessage("The loan amount exceeds the limit.");
+
+            model.addAttribute("loan", loanAccount);
+            model.addAttribute("errorMessages", errorMessages);
+
+            return "loan";
         }
 
         //calculate repayment attributes
@@ -260,14 +271,13 @@ public class HomeController {
         Double CalculatedEMI = LoanRepaymentService.CalcEmi(loanAccount.getInterestRate(), loanAccount.getTenure(), loanAccount.getLoanAmount());
         Double CalculatedInterest = LoanRepaymentService.CalcIntrest(schedule.getOutstanding(), loanAccount.getInterestRate());
         Double CalculatedPrincipal = LoanRepaymentService.CalcPrincipal(CalculatedEMI, CalculatedInterest);
-        Double CalculatedOutstanding = LoanRepaymentService.CalcOutstanding(CalculatedEMI, CalculatedPrincipal);
+        long CalculatedMonths = Long.valueOf(loanAccount.getTenure() * 12);
 
         schedule.setEMI(CalculatedEMI);
         schedule.setInterestAmount(CalculatedInterest);
-        schedule.setOutstanding(CalculatedOutstanding);
-        schedule.setMonths(0l);
+        schedule.setMonths(CalculatedMonths);
         schedule.setPrincipalAmount(CalculatedPrincipal);
-        schedule.setStatus(loanAccount.getLoanStatus());
+        schedule.setStatus("PENDING");
         schedule.setMailID(currUser.getMailID());
 
         loanRepo.save(loanAccount);
@@ -282,6 +292,48 @@ public class HomeController {
     public String congratsPage(){
 
         return "congratulations";
+    }
+
+    @GetMapping("/prepayment")
+    public String prepayment(Model model){
+
+        model.addAttribute("prepayment", new LoanAccount());
+        model.addAttribute("errorMessages", new ErrorMessage());
+
+        return "prepayment";
+    }
+
+    @PostMapping("/prepayment")
+    public String prepaymentSubmit(Model model, @ModelAttribute LoanAccount prepayment, @ModelAttribute ErrorMessage errorMessages, HttpSession session){
+
+        model.addAttribute("prepayment", prepayment);
+        model.addAttribute("errorMessages", errorMessages);
+
+        User currUser = (User) session.getAttribute("curr_user");
+
+        LoanRepaymentSchedule schedule = scheduleRepo.findByMailID(currUser.getMailID());
+
+        Double EMIAmount = schedule.getEMI();
+        Double prepaymentAmount = prepayment.getLoanAmount().doubleValue();
+        Double newOutstanding = 0.0;
+
+        if(prepaymentAmount >= (EMIAmount * 3)){
+            
+            newOutstanding = LoanAccountService.LoanPrePayment(prepaymentAmount, schedule.getOutstanding());
+
+            scheduleRepo.updateOutstandingAmount(newOutstanding, currUser.getMailID());
+
+            return "redirect:/account";
+        }
+        else{
+
+            errorMessages.setErrorMessage("Prepayment must be more or equal to three times the EMI.");
+
+            model.addAttribute("prepayment", prepayment);
+            model.addAttribute("errorMessages", errorMessages);
+
+            return "prepayment";
+        }
     }
     
 }
