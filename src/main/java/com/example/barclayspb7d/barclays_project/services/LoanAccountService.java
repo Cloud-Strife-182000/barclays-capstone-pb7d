@@ -20,8 +20,8 @@ public class LoanAccountService {
 		return (loanAmount*monthlyInterest*(Math.pow((1+monthlyInterest), tenureInMonth)))/(Math.pow((1+monthlyInterest), tenureInMonth-1));
 	}
 
-	public double LoanPrePayment(Double EMI , Double Outstanding ) {
-                return 0.0;
+	public double LoanPrePayment(Double PrePaymentAmount , Double Outstanding ) {
+                return (Outstanding - PrePaymentAmount);
         }
 
         public double LoanForeclosure(Double EMI,Double InterestAmount) {
