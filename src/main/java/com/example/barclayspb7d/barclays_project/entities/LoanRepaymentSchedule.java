@@ -57,11 +57,11 @@ public class LoanRepaymentSchedule {
 	}
 
 	public Double getInterestAmount() {
-		return this.IntrestAmount;
+		return this.InterestAmount;
 	}
 
-	public void setInterestAmount(Double IntrestAmount) {
-		this.IntrestAmount = IntrestAmount;
+	public void setInterestAmount(Double InterestAmount) {
+		this.InterestAmount = InterestAmount;
 	}
 
 	public String getStatus() {
