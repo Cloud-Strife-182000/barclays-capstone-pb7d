@@ -66,5 +66,12 @@ public class User {
         this.password = password;
     }
 
+    public String getName() {
+        return this.Name;
+    }
+
+    public void setName(String Name) {
+        this.Name = Name;
+    }
 
 }
