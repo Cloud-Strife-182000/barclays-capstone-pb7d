@@ -354,7 +354,7 @@ public class HomeController {
 
         details.setRecipient(currUser.getMailID());
 
-        String MsgBody = "Congratulations, your loan has been approved! \n\nEMI: " + CalculatedEMI + "\n\nMonths: " + CalculatedMonths;
+        String MsgBody = "Congratulations, your loan has been approved! \n\nEMI: Rs." + CalculatedEMI + "\n\nMonths: " + CalculatedMonths;
 
         details.setMsgBody(MsgBody);
         details.setSubject("Loan Approval");
@@ -408,6 +408,17 @@ public class HomeController {
             scheduleRepo.updatePrincipalAmount(CalculatedPrincipal, currUser.getMailID());
             scheduleRepo.updateMonths(calculatedMonths, currUser.getMailID());
 
+            EmailDetails details = new EmailDetails();
+
+            details.setRecipient(currUser.getMailID());
+
+            String MsgBody = "Prepayment successful! \n\nBalance: Rs." + newOutstanding + "\n\nMonths: " + calculatedMonths;
+
+            details.setMsgBody(MsgBody);
+            details.setSubject("Loan Prepayment");
+
+            String status = emailService.sendSimpleMail(details);
+
             return "redirect:/account";
         }
         else{
@@ -450,6 +461,17 @@ public class HomeController {
             scheduleRepo.updateStatus("CANCELLED", currUser.getMailID());
 
             loanRepo.updateStatus("CLOSED", currUser.getMailID());
+
+            EmailDetails details = new EmailDetails();
+
+            details.setRecipient(currUser.getMailID());
+
+            String MsgBody = "Foreclosure successful!";
+
+            details.setMsgBody(MsgBody);
+            details.setSubject("Loan Foreclosure");
+
+            String status = emailService.sendSimpleMail(details);
 
             return "redirect:/account";
         }
