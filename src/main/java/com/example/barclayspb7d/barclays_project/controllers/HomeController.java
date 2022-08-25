@@ -10,11 +10,13 @@ import javax.servlet.http.HttpSession;
 import com.example.barclayspb7d.barclays_project.dao.LoanRepository;
 import com.example.barclayspb7d.barclays_project.dao.RepaymentRepository;
 import com.example.barclayspb7d.barclays_project.dao.UserRepository;
+import com.example.barclayspb7d.barclays_project.entities.EmailDetails;
 import com.example.barclayspb7d.barclays_project.entities.ErrorMessage;
 import com.example.barclayspb7d.barclays_project.entities.LoanAccount;
 import com.example.barclayspb7d.barclays_project.entities.LoanRepaymentSchedule;
 import com.example.barclayspb7d.barclays_project.entities.ScheduleEntry;
 import com.example.barclayspb7d.barclays_project.entities.User;
+import com.example.barclayspb7d.barclays_project.services.EmailService;
 import com.example.barclayspb7d.barclays_project.services.LoanAccountService;
 import com.example.barclayspb7d.barclays_project.services.LoanRepaymentService;
 import com.opencsv.CSVWriter;
@@ -41,6 +43,9 @@ public class HomeController {
 
     @Autowired
     private RepaymentRepository scheduleRepo;
+
+    @Autowired 
+    private EmailService emailService;
 
     private List<ScheduleEntry> scheduleList = new ArrayList<ScheduleEntry>();
 
@@ -277,7 +282,7 @@ public class HomeController {
 
             model.addAttribute("curr_account", currUser);
             model.addAttribute("errorMessages", new ErrorMessage());
-            model.addAttribute("loan", new LoanAccount(5000000.0, 12.0, 10, 0l, "PENDING"));
+            model.addAttribute("loan", new LoanAccount(5000000.0, 7.0, 10, 0l, "PENDING"));
             model.addAttribute("schedule", new LoanRepaymentSchedule());
             
             return "loan";
@@ -289,8 +294,10 @@ public class HomeController {
     @PostMapping("/loan")
     public String submitLoanDetails(HttpSession session, @ModelAttribute ErrorMessage errorMessages, @ModelAttribute LoanAccount loanAccount, @ModelAttribute LoanRepaymentSchedule schedule, Model model){
     
-        loanAccount.setMaxLoanGrant(5000000.0);
-        loanAccount.setInterestRate(12.0);
+        Long netMonthlySalary = loanAccount.getNetMonthlySalary();
+        
+        loanAccount.setMaxLoanGrant(50 * netMonthlySalary.doubleValue());
+        loanAccount.setInterestRate(7.0);
         loanAccount.setTenure(10);
         loanAccount.setLoanStatus("APPROVED");
 
@@ -342,6 +349,17 @@ public class HomeController {
         scheduleRepo.save(schedule);
 
         model.addAttribute("loan", loanAccount);
+
+        EmailDetails details = new EmailDetails();
+
+        details.setRecipient(currUser.getMailID());
+
+        String MsgBody = "Congratulations, your loan has been approved! \n\nEMI: " + CalculatedEMI + "\n\nMonths: " + CalculatedMonths;
+
+        details.setMsgBody(MsgBody);
+        details.setSubject("Loan Approval");
+
+        String status = emailService.sendSimpleMail(details);
         
         return "redirect:/congratulations";
     }
