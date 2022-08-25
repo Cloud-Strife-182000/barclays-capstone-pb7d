@@ -7,8 +7,8 @@
 
 <br>
 
-[![](https://img.shields.io/badge/Made_with-React-red?style=for-the-badge&logo=spring)](https://spring.io/projects/spring-boot/ "Spring Boot")
-[![](https://img.shields.io/badge/Made_with-React-red?style=for-the-badge&logo=mysql)](https://dev.mysql.com/doc/ "Mysql")
+[![](https://img.shields.io/badge/Made_with-Spring-red?style=for-the-badge&logo=spring)](https://spring.io/projects/spring-boot/ "Spring Boot")
+[![](https://img.shields.io/badge/Made_with-Mysql-red?style=for-the-badge&logo=mysql)](https://dev.mysql.com/doc/ "Mysql")
 [![](https://img.shields.io/badge/IDE-Visual_Studio_Code-red?style=for-the-badge&logo=visual-studio-code)](https://code.visualstudio.com/  "Visual Studio Code")
 
 <h3>Home Loan System is a platform which can be used for receiving home loan applications :detective:</h3>
